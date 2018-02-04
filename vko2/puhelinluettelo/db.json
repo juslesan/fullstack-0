@@ -1,0 +1,24 @@
+{
+  "persons": [
+    {
+      "name": "Arto HEllas",
+      "number": "1312312312",
+      "id": 1
+    },
+    {
+      "name": "HEnkilö ",
+      "number": "123123123",
+      "id": 2
+    },
+    {
+      "name": "Arto",
+      "number": "123123123",
+      "id": 3
+    },
+    {
+      "name": "Arto Hellas",
+      "number": "123123123123",
+      "id": 4
+    }
+  ]
+}
