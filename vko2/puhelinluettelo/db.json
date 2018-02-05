@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto HEllas",
-      "number": "1312312312",
-      "id": 1
-    },
-    {
       "name": "HEnkilö ",
       "number": "123123123",
       "id": 2
@@ -19,6 +14,21 @@
       "name": "Arto Hellas",
       "number": "123123123123",
       "id": 4
+    },
+    {
+      "name": "Arto HEllas",
+      "number": "123123123123",
+      "id": 5
+    },
+    {
+      "name": "Artoo",
+      "number": "123123123",
+      "id": 6
+    },
+    {
+      "name": "Artooo",
+      "number": "123123",
+      "id": 7
     }
   ]
 }

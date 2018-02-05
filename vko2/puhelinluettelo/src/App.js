@@ -11,7 +11,8 @@ class App extends React.Component {
       newName: '',
       newNumber: '',
       filter: '',
-      error: null
+      error: null,
+      showAll: true
     }
   }
 
@@ -28,17 +29,39 @@ class App extends React.Component {
     event.preventDefault()
     for (var i = 0; i < this.state.persons.length; i++) {
       if (this.state.persons[i].name === this.state.newName) {
-        this.setState({
-          error: `Henkilö on jo lisätty palvelimelle`,
-        })
-        setTimeout(() => {
-          this.setState({error: null})
-        }, 5000)
-        return;
-
-      }
-      
-    }
+        if (window.confirm('Nimi on jo lisätty puhelinluetteloon, päivitetäänkö numero?')) {
+          const personObject = {
+            name: this.state.newName,
+            number: this.state.newNumber
+          }
+          personService
+          .update(this.state.persons[i].id, personObject)
+          .then(newPerson => {
+              this.setState({
+               newName: '',
+               newNumber: '',
+             })
+             this.componentDidMount()
+           })
+          this.setState({
+          error: `Numero Päivitetty`,
+          })
+          setTimeout(() => {
+            this.setState({error: null})
+          }, 5000)}
+          else {
+            this.setState({
+              error: `Henkilö on jo lisätty palvelimelle`,
+            })
+            setTimeout(() => {
+              this.setState({error: null})
+            }, 5000)}
+            this.setState({newNumber: '', newName: ''})
+            return;
+          }
+        }
+    
+  
     const personObject = {
       name: this.state.newName,
       number: this.state.newNumber
@@ -46,16 +69,13 @@ class App extends React.Component {
     personService
     .create(personObject)
     .then(newPerson => {
-      this.setState({
-        newName: '',
-        newNumber: '',
-        persons: this.state.persons.concat(newPerson)
-      })
+      this.componentDidMount()
+      
     }
 
     )
     this.setState({
-      error: `Henkilö lisätty palvelimelle`,
+      error: `Henkilö lisätty palvelimelle`, newName: '', newNumber: ''
     })
     setTimeout(() => {
       this.setState({error: null})
@@ -102,9 +122,21 @@ class App extends React.Component {
   handleFilterChange = (event) => {
     console.log(event.target.value)
     this.setState({ filter: event.target.value })
+    console.log(this.state.filter)
+    
+    if (this.state.filter.length === 0) {
+      this.setState({showAll: true})
+    } else {
+      this.setState({showAll: false})
+    }
+    console.log(this.state.showAll)
   }
 
   render() {
+    const personsToShow =
+      this.state.showAll ?
+        this.state.persons :
+        this.state.persons.filter(person => person.name.includes(this.state.filter))
     return (
       <div>
         <h2>Puhelinluettelo</h2>
@@ -112,7 +144,9 @@ class App extends React.Component {
 
         <div>
         rajaa hakua <input
-                    onChange={this.handleFilterChange}/>
+                    value ={this.state.filter}
+                    onChange={this.handleFilterChange}
+                    />
         </div>
 
         <h2>Lisää numero</h2>
@@ -135,7 +169,7 @@ class App extends React.Component {
           </div>
         </form>
         <h2>Numerot</h2>
-        {this.state.persons.map(person => <Person key={person.name} person={person} deletePerson={this.deletePerson(person.id)}/>)}
+        {personsToShow.map(person => <Person key={person.name} person={person} deletePerson={this.deletePerson(person.id)}/>)}
         </div>
     )
   }
