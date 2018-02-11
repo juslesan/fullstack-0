@@ -124,7 +124,7 @@ class App extends React.Component {
     this.setState({ filter: event.target.value })
     console.log(this.state.filter)
     
-    if (this.state.filter.length === 0) {
+    if (event.target.value === 0) {
       this.setState({showAll: true})
     } else {
       this.setState({showAll: false})
